@@ -9,6 +9,7 @@
 # pkg install autoconf
 # pkg install mercurial
 # pkg install cups
+# pkg install mmheap
 
 intro () {
     echo "Conducting some basic dep checks to ensure the tools you need"
@@ -41,6 +42,7 @@ for i in "/bin/autoconf" "/usr/jdk/instances/jdk1.8.0/bin/java" \
     "/usr/include/cups/ppd.h" \
     "/usr/lib/libfreetype.so" \
     "/bin/gmake" \
+    "/usr/lib/libmmheap.so.1" \
     ; do stat $i >/dev/null 2>/dev/null || failwich $i ; done
 
 
