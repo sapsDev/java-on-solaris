@@ -80,12 +80,19 @@ EOF
   gsed -i 's/refmemnoconstr_aggr//' make/lib/Awt2dLibraries.gmk
 }
 
+function fixsrc5 {
+        gsed -i 's/TRAPNO/REG_TRAPNO/' hotspot/src/os_cpu/solaris_x86/vm/os_solaris_x86.cpp
+}
+
+function fixsrc6 {
+        gsed -i 's/TRAPNO/REG_TRAPNO/' src/hotspot/os_cpu/solaris_x86/os_solaris_x86.cpp
+}
 
 
 for VERSION in {9..14}; do
 
-  # [[ ${VERSION} -le 15 ]] && STUDIO="${STUDIO126}" 
-  # [[ ${VERSION} -le 12 ]] && STUDIO="${STUDIO124}" 
+# [[ ${VERSION} -le 15 ]] && STUDIO="${STUDIO126}" 
+# [[ ${VERSION} -le 12 ]] && STUDIO="${STUDIO124}" 
 
   STUDIO="${STUDIO124}"
 
@@ -99,6 +106,8 @@ for VERSION in {9..14}; do
   fixsrc1 ; fixsrc2 ; fixsrc3 
 
   [[ ${VERSION} -ge 13 ]] && fixsrc4
+  [[ ${VERSION} -eq 9 ]]  && fixsrc5
+  [[ ${VERSION} -ge 10 ]] && fixsrc6
 
   [[ ${VERSION} -ge 12 ]] && CONFIGURE_OPTIONS="${CONFIG_OPTS_JDK12}"
   [[ ${VERSION} -ge 13 ]] && CONFIGURE_OPTIONS="${CONFIG_OPTS_JDK13}"
