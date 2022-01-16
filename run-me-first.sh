@@ -31,7 +31,39 @@ failwich () {
     exit 1
 }
 
+no_studio () {
+    echo "Compiling the JDK requires Oracle Solaris Studio 12.4."
+    echo "Other versions are not likely to work. GCC will not work."
+    echo "You will need to install studio to complete this build."
+    echo ""
+}
+
+tarball_studio () {
+    no_studio
+    echo "You have Solaris Studio 12.4 installed, but this script cannot"
+    echo "detect an IPS install."
+    echo ""
+    echo "If you have installed from a tarball distribution from Oracle,"
+    echo "there is a good chance that this build will fail in annoying and"
+    echo "hard to diagnose ways, such as random libharfbuff errors."
+    echo ""
+    echo "If you have just copied Solaris Studio from an IPS installed host"
+    echo "by hand and the installation is from the proper IPS repositories,"
+    echo "you can ignore this warning."
+    echo ""
+}
+
+chk_pkg_studio () {
+    echo "Checking IPS pkg list, this may take a few seconds ..."
+    echo ""
+    pkg list | grep "developer/solarisstudio-124" >/dev/null 2>/dev/null || tarball_studio
+}
+
 intro
+
+stat /opt/solarisstudio12.4/bin/cc >/dev/null 2>/dev/null || no_studio
+stat /opt/solarisstudio12.4/bin/cc >/dev/null 2>/dev/null && chk_pkg_studio
+
 
 for i in "/bin/autoconf" "/usr/jdk/instances/jdk1.8.0/bin/java" \
     "/usr/bin/hg" \
